@@ -1,26 +1,49 @@
 # MouClassInputInjection Driver Build
 
-This repository contains the pre-built `MouClassInputInjection.sys` driver binary.
+Standalone repository for building `MouClassInputInjection.sys` via GitHub Actions.
 
-## Usage
+## Quick Start
 
-### Option 1: Download pre-built binary
+### 1. Push to GitHub
 
-1. Go to the **releases** branch: `https://github.com/YOUR_USERNAME/driver-build/tree/release`
-2. Download `bin/MouClassInputInjection.sys`
-3. Place it in your `build/` directory alongside `load_mouii.exe`
+```bash
+# In your main synth repo:
+git push origin master  # Push the submodule reference
 
-### Option 2: Build yourself
+# Then push the driver-build submodule:
+cd submodules/driver-build
+git remote add origin https://github.com/YOUR_USERNAME/synth-driver-build.git
+git push -u origin master
+```
 
-1. Open `MouClassInputInjection.vcxproj` in Visual Studio with WDK installed
-2. Build with Release|x64 configuration
-3. Output: `bin/x64/Release/MouClassInputInjection/MouClassInputInjection.sys`
+### 2. Run GitHub Actions
 
-### Option 3: GitHub Actions
+1. Go to your repo's **Actions** tab
+2. Click "Build Driver" workflow
+3. Click "Run workflow"
 
-1. Go to **Actions** tab
-2. Run the "Build Driver" workflow
-3. Download the artifact `MouClassInputInjection.sys`
+### 3. Get the binary
+
+**Option A: From release branch** (automatic after workflow runs)
+```bash
+# In main synth repo:
+./fetch_driver.sh
+```
+
+**Option B: Download artifact**
+- Go to the workflow run in Actions tab
+- Download `MouClassInputInjection.sys` artifact
+- Place in `build/` directory
+
+## Local Build (Windows with WDK)
+
+```batch
+REM Open in Visual Studio with WDK installed
+MouClassInputInjection.vcxproj
+
+REM Build: Release | x64
+REM Output: bin\x64\Release\MouClassInputInjection\MouClassInputInjection.sys
+```
 
 ## License
 
