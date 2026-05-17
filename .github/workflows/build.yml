@@ -41,13 +41,38 @@ jobs:
           retention-days: 30
 
       - name: Commit binary to release branch
+        shell: pwsh
         run: |
+          $sysPath = "bin/x64/Release/MouClassInputInjection/MouClassInputInjection.sys"
+          if (!(Test-Path $sysPath)) {
+            Write-Error "Driver binary not found at $sysPath"
+            exit 1
+          }
+          
+          # Copy to temp location so it's not lost during branch switch
+          Copy-Item $sysPath "MouClassInputInjection.sys.tmp"
+          
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin release --depth=1 || git checkout --orphan release
-          git checkout release
-          mkdir -p bin
-          Copy-Item "bin/x64/Release/MouClassInputInjection/MouClassInputInjection.sys" bin/ -Force
+          
+          # Try to get the release branch
+          git fetch origin release --depth=1
+          if ($LASTEXITCODE -eq 0) {
+              git checkout release
+              git reset --hard origin/release
+          } else {
+              git checkout --orphan release
+              git rm -rf .
+          }
+          
+          # Create bin directory if it doesn't exist
+          if (!(Test-Path bin)) {
+              New-Item -ItemType Directory bin
+          }
+          
+          # Place the driver
+          Move-Item "MouClassInputInjection.sys.tmp" "bin/MouClassInputInjection.sys" -Force
+          
           git add bin/MouClassInputInjection.sys
-          git commit -m "chore: add pre-built driver binary [skip ci]" || exit 0
+          git commit -m "chore: add pre-built driver binary [skip ci]"
           git push -f origin release
