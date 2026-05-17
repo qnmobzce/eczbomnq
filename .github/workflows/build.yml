@@ -37,13 +37,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MouClassInputInjection.sys
-          path: bin/x64/Release/MouClassInputInjection/MouClassInputInjection.sys
+          path: bin/MouClassInputInjection.sys
           retention-days: 30
 
       - name: Commit binary to release branch
         shell: pwsh
         run: |
-          $sysPath = "bin/x64/Release/MouClassInputInjection/MouClassInputInjection.sys"
+          $sysPath = "bin/MouClassInputInjection.sys"
           if (!(Test-Path $sysPath)) {
             Write-Error "Driver binary not found at $sysPath"
             exit 1
