@@ -1,0 +1,53 @@
+name: Build Driver
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - '*.cpp'
+      - '*.h'
+      - '*.vcxproj'
+      - '*.sln'
+      - '*.inf'
+      - '.github/**'
+
+jobs:
+  build:
+    runs-on: windows-2022
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build Driver
+        shell: cmd
+        run: |
+          msbuild MouClassInputInjection.vcxproj ^
+            /p:Configuration=Release ^
+            /p:Platform=x64 ^
+            /p:OutDir=./bin/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MouClassInputInjection.sys
+          path: bin/x64/Release/MouClassInputInjection/MouClassInputInjection.sys
+          retention-days: 30
+
+      - name: Commit binary to release branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin release --depth=1 || git checkout --orphan release
+          git checkout release
+          mkdir -p bin
+          Copy-Item "bin/x64/Release/MouClassInputInjection/MouClassInputInjection.sys" bin/ -Force
+          git add bin/MouClassInputInjection.sys
+          git commit -m "chore: add pre-built driver binary [skip ci]" || exit 0
+          git push -f origin release

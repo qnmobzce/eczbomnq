@@ -1,0 +1,17 @@
+# Build outputs
+bin/
+obj/
+*.log
+*.tmp
+ip/
+ARM/
+ARM64/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+
+# Driver signing
+*.cer
+*.pfx
