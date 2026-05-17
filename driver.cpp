@@ -15,7 +15,7 @@ for more information.
 #include "mouhid.h"
 #include "mouhid_hook_manager.h"
 
-#include "../Common/ioctl.h"
+#include "Common/ioctl.h"
 
 
 //=============================================================================

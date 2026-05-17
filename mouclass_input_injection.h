@@ -13,7 +13,7 @@ for more information.
 
 #include <ntddmou.h>
 
-#include "../Common/ioctl.h"
+#include "Common/ioctl.h"
 
 //=============================================================================
 // Meta Interface

@@ -19,7 +19,7 @@ for more information.
 #include "mouse_input_validation.h"
 #include "nt.h"
 
-#include "../Common/time.h"
+#include "Common/time.h"
 
 
 //=============================================================================

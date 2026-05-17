@@ -21,7 +21,7 @@ for more information.
 #include "mouhid.h"
 #include "object_util.h"
 
-#include "../Common/time.h"
+#include "Common/time.h"
 
 
 //=============================================================================
