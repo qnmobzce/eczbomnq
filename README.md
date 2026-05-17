@@ -44,7 +44,3 @@ MouClassInputInjection.vcxproj
 REM Build: Release | x64
 REM Output: bin\x64\Release\MouClassInputInjection\MouClassInputInjection.sys
 ```
-
-## License
-
-Original driver by changeofpace: https://github.com/changeofpace/MouClassInputInjection
